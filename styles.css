@@ -106,6 +106,8 @@ body {
 .logo img {
     height: 50px;
     width: auto;
+    max-width: 200px;
+    object-fit: contain;
 }
 
 .logo-text {
