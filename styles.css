@@ -989,6 +989,13 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.footer-license {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
 .footer-disclaimer {
     margin-top: 1rem;
     font-size: 0.875rem;
