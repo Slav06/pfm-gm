@@ -65,7 +65,7 @@ window.addEventListener('load', initCounters);
 // Update license numbers
 function updateLicenseNumbers() {
     const dotNumber = '3516489';
-    const mcNumber = 'MC-1197300';
+    const mcNumber = '1197300';
     
     document.getElementById('dotNumber').textContent = dotNumber;
     document.getElementById('footerDotNumber').textContent = dotNumber;
