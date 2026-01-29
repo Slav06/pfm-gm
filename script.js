@@ -57,18 +57,15 @@ function initCounters() {
 // Initialize counters on page load
 window.addEventListener('load', initCounters);
 
-// Update license numbers (you can update MC number when you have it)
+// Update license numbers
 function updateLicenseNumbers() {
     const dotNumber = '3516489';
-    const mcNumber = '--'; // Update this when you have the MC number
+    const mcNumber = 'MC-1197300';
     
     document.getElementById('dotNumber').textContent = dotNumber;
     document.getElementById('footerDotNumber').textContent = dotNumber;
-    
-    if (mcNumber !== '--') {
-        document.getElementById('mcNumber').textContent = mcNumber;
-        document.getElementById('footerMcNumber').textContent = mcNumber;
-    }
+    document.getElementById('mcNumber').textContent = mcNumber;
+    document.getElementById('footerMcNumber').textContent = mcNumber;
 }
 
 // Initialize license numbers on page load
