@@ -46,7 +46,7 @@ PFM-GM/
 ## Customization
 
 ### Update Phone Number
-Search and replace `(855) 400-1090` throughout the files with your actual phone number.
+The phone number 845-834-8101 is used throughout the site.
 
 ### Update Counter Numbers
 In `script.js`, update the counter values:
