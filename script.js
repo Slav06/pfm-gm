@@ -201,8 +201,8 @@ function formatMoveDate(dateStr) {
     return mm + '/' + dd + '/' + yyyy;
 }
 
-// Hello Moving API POST URL (from Developer Guide)
-const HELLO_MOVING_POST_URL = 'https://lead.hellomoving.com/LEADSGWHTTP.lidgw?&API_ID=2F795AB570B1&MOVERREF=said@perfectlyfastmoving.com';
+// POST to our API proxy (avoids CORS); proxy forwards to Hello Moving
+const LEAD_POST_URL = '/api/lead';
 
 // Quote form submission - POST to Hello Moving API
 const quoteForm = document.getElementById('quoteForm');
@@ -243,7 +243,7 @@ if (quoteForm) {
         submitBtn.textContent = 'Sending...';
         
         try {
-            const response = await fetch(HELLO_MOVING_POST_URL, {
+            const response = await fetch(LEAD_POST_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: params.toString()
