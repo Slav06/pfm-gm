@@ -28,7 +28,7 @@ function animateCounter(element, target, suffix = '') {
 // Initialize counters when page loads
 function initCounters() {
     // You can update these numbers based on actual data
-    const familiesMoved = 1000;
+    const familiesMoved = 30000;
     const recentBookings = 12;
     
     const familiesElement = document.getElementById('familiesMoved');

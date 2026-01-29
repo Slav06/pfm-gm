@@ -51,7 +51,7 @@ The phone number 845-834-8101 is used throughout the site.
 ### Update Counter Numbers
 In `script.js`, update the counter values:
 ```javascript
-const familiesMoved = 1000;  // Update with actual number
+const familiesMoved = 30000;  // Update with actual number
 const recentBookings = 12;   // Update with actual number
 ```
 
