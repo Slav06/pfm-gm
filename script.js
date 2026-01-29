@@ -8,6 +8,11 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Format number with commas
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 // Animated counters
 function animateCounter(element, target, suffix = '') {
     const duration = 2000;
@@ -17,10 +22,10 @@ function animateCounter(element, target, suffix = '') {
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
-            element.textContent = target + suffix;
+            element.textContent = formatNumber(target) + suffix;
             clearInterval(timer);
         } else {
-            element.textContent = Math.floor(current) + suffix;
+            element.textContent = formatNumber(Math.floor(current)) + suffix;
         }
     }, 16);
 }
