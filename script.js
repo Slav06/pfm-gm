@@ -184,32 +184,95 @@ function prevStep() {
 // Initialize progress on page load
 updateProgress();
 
-// Quote form submission
+// Extract 5-digit zip from address string (e.g. "12345" or "City, ST 12345")
+function extractZip(str) {
+    if (!str || typeof str !== 'string') return '';
+    const match = str.trim().match(/\b(\d{5})(-\d{4})?\b/);
+    return match ? match[1] : str.replace(/\D/g, '').slice(0, 5) || '';
+}
+
+// Format date as MM/DD/YYYY for Hello Moving API
+function formatMoveDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return mm + '/' + dd + '/' + yyyy;
+}
+
+// Hello Moving API POST URL (from Developer Guide)
+const HELLO_MOVING_POST_URL = 'https://lead.hellomoving.com/LEADSGWHTTP.lidgw?&API_ID=2F795AB570B1&MOVERREF=said@perfectlyfastmoving.com';
+
+// Quote form submission - POST to Hello Moving API
 const quoteForm = document.getElementById('quoteForm');
 if (quoteForm) {
-    quoteForm.addEventListener('submit', (e) => {
+    quoteForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Collect form data
-        const formData = new FormData(quoteForm);
-        const data = Object.fromEntries(formData);
+        const pickup = document.getElementById('pickup').value.trim();
+        const destination = document.getElementById('destination').value.trim();
+        const moveDate = document.getElementById('moveDate').value;
+        const moveSize = document.getElementById('moveSize').value;
+        const firstname = document.getElementById('firstname').value.trim();
+        const lastname = document.getElementById('lastname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.replace(/\D/g, '').slice(0, 10);
+        const phoneFormatted = phone.length >= 10 ? phone : document.getElementById('phone').value.trim();
         
-        // Here you would typically send the data to your backend
-        console.log('Form submitted:', data);
+        const ozip = extractZip(pickup);
+        const dzip = extractZip(destination);
+        const movedte = formatMoveDate(moveDate);
         
-        // Show success message
-        alert('Thank you! Your quote request has been submitted. We will contact you shortly.');
+        // Build POST body per Developer Guide (label, firstname, lastname, email, phone1, movedte, ozip, dzip, movesize)
+        const params = new URLSearchParams();
+        params.set('label', 'GETMOVERS');
+        params.set('firstname', firstname);
+        params.set('lastname', lastname);
+        params.set('email', email);
+        params.set('phone1', phoneFormatted);
+        params.set('movedte', movedte);
+        params.set('ozip', ozip);
+        params.set('dzip', dzip);
+        params.set('movesize', moveSize);
+        params.set('servtypeid', '102'); // 102 = Long Distance Move per Developer Guide
         
-        // Reset form
-        quoteForm.reset();
-        currentStep = 1;
-        showStep(currentStep);
+        const submitBtn = quoteForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
         
-        // Update recent bookings counter
-        const recentBookings = parseInt(document.getElementById('recentBookings').textContent) || 12;
-        document.getElementById('recentBookings').textContent = (recentBookings + 1) + '+';
-        document.getElementById('quoteRecent').textContent = (recentBookings + 1) + '+';
-        document.getElementById('ctaRecent').textContent = (recentBookings + 1) + '+';
+        try {
+            const response = await fetch(HELLO_MOVING_POST_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: params.toString()
+            });
+            const text = await response.text();
+            // API returns delimited string e.g. "104360,0,OK,6,6" (LEADID, ERRID, message, ...)
+            const parts = text.split(',');
+            const errId = parts[1] ? parts[1].trim() : '';
+            const message = parts[2] ? parts[2].trim() : text;
+            
+            if (errId === '0') {
+                alert('Thank you! Your quote request has been submitted. We will contact you shortly.');
+                quoteForm.reset();
+                currentStep = 1;
+                showStep(currentStep);
+                const recentBookings = parseInt(document.getElementById('recentBookings').textContent) || 12;
+                document.getElementById('recentBookings').textContent = (recentBookings + 1) + '+';
+                document.getElementById('quoteRecent').textContent = (recentBookings + 1) + '+';
+                document.getElementById('ctaRecent').textContent = (recentBookings + 1) + '+';
+            } else {
+                alert('There was a problem submitting your request. Please try again or call us at 845-834-8101. Error: ' + message);
+            }
+        } catch (err) {
+            console.error('Lead post error:', err);
+            alert('Could not submit form. Please check your connection and try again, or call us at 845-834-8101.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
     });
 }
 
