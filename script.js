@@ -258,8 +258,10 @@ if (quoteForm) {
                 // Successful lead post – send user to a proper thank-you page
                 const recentBookings = parseInt(document.getElementById('recentBookings').textContent) || 12;
                 document.getElementById('recentBookings').textContent = (recentBookings + 1) + '+';
-                document.getElementById('quoteRecent').textContent = (recentBookings + 1) + '+';
-                document.getElementById('ctaRecent').textContent = (recentBookings + 1) + '+';
+                const quoteRecentEl = document.getElementById('quoteRecent');
+                if (quoteRecentEl) quoteRecentEl.textContent = (recentBookings + 1) + '+';
+                const ctaRecentEl = document.getElementById('ctaRecent');
+                if (ctaRecentEl) ctaRecentEl.textContent = (recentBookings + 1) + '+';
 
                 // Redirect to thank-you page (staff can customize content there)
                 window.location.href = 'thank-you.html';
