@@ -111,15 +111,15 @@ body {
 }
 
 .logo-img {
-    height: 50px;
+    height: 70px;
     width: auto;
-    max-width: 200px;
+    max-width: 280px;
     object-fit: contain;
 }
 
 .logo-partner {
-    height: 45px;
-    max-width: 150px;
+    height: 63px;
+    max-width: 210px;
 }
 
 .logo-separator {
@@ -1189,13 +1189,13 @@ body {
     }
 
     .logo-img {
-        height: 40px;
-        max-width: 150px;
+        height: 56px;
+        max-width: 210px;
     }
 
     .logo-partner {
-        height: 35px;
-        max-width: 120px;
+        height: 49px;
+        max-width: 168px;
     }
 
     .trust-badge {
