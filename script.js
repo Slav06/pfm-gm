@@ -255,14 +255,14 @@ if (quoteForm) {
             const message = parts[2] ? parts[2].trim() : text;
             
             if (errId === '0') {
-                alert('Thank you! Your quote request has been submitted. We will contact you shortly.');
-                quoteForm.reset();
-                currentStep = 1;
-                showStep(currentStep);
+                // Successful lead post – send user to a proper thank-you page
                 const recentBookings = parseInt(document.getElementById('recentBookings').textContent) || 12;
                 document.getElementById('recentBookings').textContent = (recentBookings + 1) + '+';
                 document.getElementById('quoteRecent').textContent = (recentBookings + 1) + '+';
                 document.getElementById('ctaRecent').textContent = (recentBookings + 1) + '+';
+
+                // Redirect to thank-you page (staff can customize content there)
+                window.location.href = 'thank-you.html';
             } else {
                 alert('There was a problem submitting your request. Please try again or call us at 845-834-8101. Error: ' + message);
             }
