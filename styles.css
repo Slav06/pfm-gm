@@ -224,11 +224,40 @@ body {
     z-index: -1;
 }
 
-.hero-content {
+.hero-inner {
     position: relative;
     z-index: 1;
-    max-width: 900px;
-    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.hero-left {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.hero-left .hero-badges {
+    justify-content: flex-start;
+}
+
+.hero-left .hero-cta {
+    justify-content: flex-start;
+}
+
+.hero-right {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 420px;
+}
+
+.hero-form-card {
+    margin: 0;
 }
 
 .hero-badges {
@@ -1083,6 +1112,30 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 968px) {
+    .hero-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-left {
+        text-align: center;
+    }
+
+    .hero-left .hero-badges {
+        justify-content: center;
+    }
+
+    .hero-left .hero-cta {
+        justify-content: center;
+    }
+
+    .hero-right {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .top-bar {
         font-size: 0.75rem;
