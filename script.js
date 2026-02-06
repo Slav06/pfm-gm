@@ -213,15 +213,25 @@ function getClickId() {
     // If found in URL, store it in sessionStorage to persist across navigation
     if (clickid) {
         sessionStorage.setItem('clickid', clickid);
+        console.log('[DEBUG] ClickID captured from URL:', clickid);
         return clickid;
     }
     
     // If not in URL, check sessionStorage (in case user navigated from a page with clickid)
-    return sessionStorage.getItem('clickid') || null;
+    const storedClickId = sessionStorage.getItem('clickid');
+    if (storedClickId) {
+        console.log('[DEBUG] ClickID retrieved from sessionStorage:', storedClickId);
+    } else {
+        console.log('[DEBUG] No ClickID found in URL or sessionStorage');
+    }
+    return storedClickId || null;
 }
 
 // Initialize clickid capture on page load
 const capturedClickId = getClickId();
+if (capturedClickId) {
+    console.log('[DEBUG] ClickID initialized on page load:', capturedClickId);
+}
 
 // Quote form submission - POST to Hello Moving API
 const quoteForm = document.getElementById('quoteForm');
@@ -262,7 +272,14 @@ if (quoteForm) {
         // Add Ref_no with clickid if available (required by lead provider)
         if (clickid) {
             params.set('Ref_no', clickid);
+            console.log('[DEBUG] Ref_no added to API request:', clickid);
+        } else {
+            console.warn('[DEBUG] No ClickID available - Ref_no will not be sent');
         }
+        
+        // Log all parameters being sent (for debugging)
+        console.log('[DEBUG] Form submission parameters:', Object.fromEntries(params));
+        console.log('[DEBUG] Full POST body:', params.toString());
         
         const submitBtn = quoteForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
@@ -270,16 +287,23 @@ if (quoteForm) {
         submitBtn.textContent = 'Sending...';
         
         try {
+            console.log('[DEBUG] Sending POST request to:', LEAD_POST_URL);
             const response = await fetch(LEAD_POST_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: params.toString()
             });
             const text = await response.text();
+            console.log('[DEBUG] API Response:', text);
+            console.log('[DEBUG] Response Status:', response.status);
+            
             // API returns delimited string e.g. "104360,0,OK,6,6" (LEADID, ERRID, message, ...)
             const parts = text.split(',');
+            const leadId = parts[0] ? parts[0].trim() : '';
             const errId = parts[1] ? parts[1].trim() : '';
             const message = parts[2] ? parts[2].trim() : text;
+            
+            console.log('[DEBUG] Parsed Response - LeadID:', leadId, 'ErrorID:', errId, 'Message:', message);
             
             if (errId === '0') {
                 // Successful lead post – send user to a proper thank-you page
