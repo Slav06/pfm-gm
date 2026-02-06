@@ -204,6 +204,25 @@ function formatMoveDate(dateStr) {
 // POST to our API proxy (avoids CORS); proxy forwards to Hello Moving
 const LEAD_POST_URL = '/api/lead';
 
+// Capture clickid from URL and store it for form submission
+function getClickId() {
+    // Check URL parameters for clickid
+    const urlParams = new URLSearchParams(window.location.search);
+    const clickid = urlParams.get('clickid');
+    
+    // If found in URL, store it in sessionStorage to persist across navigation
+    if (clickid) {
+        sessionStorage.setItem('clickid', clickid);
+        return clickid;
+    }
+    
+    // If not in URL, check sessionStorage (in case user navigated from a page with clickid)
+    return sessionStorage.getItem('clickid') || null;
+}
+
+// Initialize clickid capture on page load
+const capturedClickId = getClickId();
+
 // Quote form submission - POST to Hello Moving API
 const quoteForm = document.getElementById('quoteForm');
 if (quoteForm) {
@@ -224,6 +243,9 @@ if (quoteForm) {
         const dzip = extractZip(destination);
         const movedte = formatMoveDate(moveDate);
         
+        // Get clickid (from URL or sessionStorage)
+        const clickid = getClickId();
+        
         // Build POST body per Developer Guide (label, firstname, lastname, email, phone1, movedte, ozip, dzip, movesize)
         const params = new URLSearchParams();
         params.set('label', 'GETMOVERS');
@@ -236,6 +258,11 @@ if (quoteForm) {
         params.set('dzip', dzip);
         params.set('movesize', moveSize);
         params.set('servtypeid', '102'); // 102 = Long Distance Move per Developer Guide
+        
+        // Add Ref_no with clickid if available (required by lead provider)
+        if (clickid) {
+            params.set('Ref_no', clickid);
+        }
         
         const submitBtn = quoteForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
