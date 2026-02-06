@@ -269,12 +269,13 @@ if (quoteForm) {
         params.set('movesize', moveSize);
         params.set('servtypeid', '102'); // 102 = Long Distance Move per Developer Guide
         
-        // Add Ref_no with clickid if available (required by lead provider)
+        // Add leadno (Granot Developer Guide) + Ref_no (lead provider)
         if (clickid) {
-            params.set('Ref_no', clickid);
-            console.log('[DEBUG] Ref_no added to API request:', clickid);
+            params.set('leadno', clickid);  // Granot – per Leads Posting Developer Guide
+            params.set('Ref_no', clickid);  // Lead provider
+            console.log('[DEBUG] leadno + Ref_no added:', clickid);
         } else {
-            console.warn('[DEBUG] No ClickID available - Ref_no will not be sent');
+            console.warn('[DEBUG] No ClickID available – leadno/Ref_no not sent');
         }
         
         // Log all parameters being sent (for debugging)

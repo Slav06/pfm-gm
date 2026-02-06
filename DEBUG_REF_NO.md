@@ -29,18 +29,23 @@ If using Vercel:
 - Go to Vercel Dashboard → Your Project → Functions → `/api/lead`
 - Check function logs to see the request body being forwarded
 
-## Where to Find Ref_no in Granot/Hello Moving
+## What we send to Granot
+
+We send the clickid in **two** parameters so it shows in Granot:
+
+- **Ref_no** – used by lead provider / Hello Moving
+- **sourcereference** – Granot’s official field for “landing page or form where the lead came from”; **this data can be retrieved in reports** (per Granot API docs)
+
+## Where to Find Ref_no / sourcereference in Granot
 
 ### Option 1: Granot Admin Dashboard
 1. Log into your **Granot/Hello Moving admin panel**
 2. Navigate to **Leads** or **Lead Management** section
 3. Find the lead you just submitted
-4. Look for fields like:
-   - **Reference Number**
-   - **Ref_no**
-   - **Reference**
-   - **Custom Field 1** or similar custom fields
-   - **Notes** or **Comments** section
+4. Look for:
+   - **Source Reference** or **sourcereference** (main field for reports)
+   - **Reference Number** / **Ref_no** / **Reference**
+   - **Notes** or **Comments**
 
 ### Option 2: Lead Details Page
 1. Click on a specific lead to view details
@@ -51,12 +56,10 @@ If using Vercel:
    - Lead source/attribution fields
 
 ### Option 3: Export/Reports
-1. Export leads to CSV/Excel
-2. Look for a column named:
-   - `Ref_no`
-   - `Reference`
-   - `Reference Number`
-   - `Custom1` or similar
+1. Export leads to CSV/Excel or run reports
+2. Look for columns:
+   - **sourcereference** (Granot’s report field for source/click ID)
+   - `Ref_no`, `Reference`, `Reference Number`, or `Custom1`
 
 ### Option 4: Contact Granot Support
 If you can't find it:
@@ -121,7 +124,7 @@ The request should look like this:
 POST /api/lead
 Content-Type: application/x-www-form-urlencoded
 
-label=GETMOVERS&firstname=John&lastname=Doe&email=test@example.com&phone1=5551234567&movedte=02/15/2026&ozip=12345&dzip=67890&movesize=2Bedrooms&servtypeid=102&Ref_no=TEST123
+label=GETMOVERS&firstname=John&...&servtypeid=102&Ref_no=TEST123&sourcereference=TEST123
 ```
 
-Notice the `Ref_no=TEST123` at the end.
+Notice `Ref_no=TEST123` and `sourcereference=TEST123` – both are sent so Granot shows the click ID in reports (sourcereference).
