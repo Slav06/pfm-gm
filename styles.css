@@ -518,6 +518,10 @@ body {
     line-height: 1.5;
 }
 
+.sms-consent-text {
+    font-size: 0.75rem;
+}
+
 .form-buttons {
     display: flex;
     gap: 1rem;
@@ -662,6 +666,13 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+}
+
+/* Force all service cards on a single row on large screens */
+@media (min-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 .service-card {
@@ -981,6 +992,19 @@ body {
     font-size: 0.875rem;
     opacity: 0.9;
     margin-top: 1rem;
+}
+
+/* Inline CTA strips between sections */
+.section-inline-cta {
+    padding: 2.5rem 0;
+    background: var(--bg-light);
+}
+
+.section-inline-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* Support Section */
